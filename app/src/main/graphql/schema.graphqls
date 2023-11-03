@@ -1,0 +1,34 @@
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  # You may include other user-related fields here
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type Query {
+  # Query to retrieve information about the currently authenticated user
+  me: User
+  users: [User]
+}
+
+
+type Mutation {
+  # Mutation for user registration
+  register(username: String!, email: String!, password: String!): AuthPayload
+
+  # Mutation for user login
+  login(email: String!, password: String!): AuthPayload
+
+  loginWithOTP(mobile: String!,countryCode: String!): AuthPayload
+}
+
+
+schema {
+  query: Query
+  mutation: Mutation
+}
