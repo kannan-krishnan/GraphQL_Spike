@@ -1,0 +1,10 @@
+mutation LoginWithToken($email: String!, $password: String!) {
+    loginWithToken(email: $email, password: $password) {
+        token
+        user {
+            id
+            username
+            email
+        }
+    }
+}

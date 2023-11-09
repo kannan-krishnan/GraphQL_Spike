@@ -4,11 +4,9 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import okhttp3.OkHttpClient
 
-object ApolloClient {
-    private val okHttpClient = OkHttpClient.Builder().build()
+private val okHttpClient = OkHttpClient.Builder().build()
 
-    val apolloClient = ApolloClient.Builder()
-        .serverUrl("https://api.mocki.io/v2/c4d7a195/graphql")
-        .okHttpClient(okHttpClient)
-        .build()
-}
+val apolloClient = ApolloClient.Builder()
+    .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql")
+    .okHttpClient(okHttpClient)
+    .build()

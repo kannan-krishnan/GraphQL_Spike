@@ -28,19 +28,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.apollographql.apollo3.exception.ApolloException
-import com.orane.icliniq.apollo.ApolloClient
 import com.orane.icliniq.ui.theme.GraphQLSpikeTheme
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GraphQLSpikeTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -59,9 +55,11 @@ fun LoginScreen(authViewModel: AuthViewModel) {
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
-    var loginResult by remember { mutableStateOf<LoginMutation.Data?>(null) }
+    val loginResult by remember { mutableStateOf<LoginMutation.Data?>(null) }
     var error by remember { mutableStateOf<ApolloException?>(null) }
     val coroutineScope = rememberCoroutineScope()
+
+    val token = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -83,11 +81,8 @@ fun LoginScreen(authViewModel: AuthViewModel) {
             onClick = {
                 coroutineScope.launch {
                     try {
-                        val result = authViewModel.login(username.value, password.value)
-                        if (result == null) {
-                            Toast.makeText(context, "Response was null", Toast.LENGTH_SHORT).show()
-                        }
-                        loginResult = result
+                        token.value = authViewModel.loginWithToken(username.value)
+                        Toast.makeText(context, if(token.value) "Login with token success" else "Login with token failed" , Toast.LENGTH_SHORT).show()
                     } catch (e: ApolloException) {
                         error = e
                     }
@@ -105,6 +100,11 @@ fun LoginScreen(authViewModel: AuthViewModel) {
         error?.let { e ->
             Toast.makeText(context,"${e.message}", Toast.LENGTH_SHORT).show()
             Log.e("error", "LoginScreen: ${e.message}" )
+        }
+
+        if (token.value){
+
+            Text(text ="New token is :${authViewModel._sampleLiveData.value}")
         }
     }
 }

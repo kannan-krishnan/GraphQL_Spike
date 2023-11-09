@@ -3,6 +3,7 @@ type User {
   username: String!
   email: String!
   # You may include other user-related fields here
+  token: String
 }
 
 type AuthPayload {
@@ -22,9 +23,11 @@ type Mutation {
   register(username: String!, email: String!, password: String!): AuthPayload
 
   # Mutation for user login
-  login(email: String!, password: String!): AuthPayload
+  login(email: String!): User
 
   loginWithOTP(mobile: String!,countryCode: String!): AuthPayload
+
+  loginWithToken(email:String, password: String!) : AuthPayload
 }
 
 

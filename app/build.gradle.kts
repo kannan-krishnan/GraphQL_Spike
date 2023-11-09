@@ -70,8 +70,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation("com.apollographql.apollo3:apollo-runtime")
-    implementation ("com.apollographql.apollo3:apollo-http-cache")
-//    implementation("com.apollographql.apollo3:apollo-runtime:3.8.2")
 }
 apollo {
     generateKotlinModels.set(true)
